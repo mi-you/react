@@ -1,0 +1,8 @@
+### 创建react
+//  npx 不是拼写错误 —— 它是 npm 5.2+ 附带的 package 运行工具。
+//  安装不动可以尝试将npm的源改成淘宝镜像
+
+npx create-react-app item-name
+
+
+ 
