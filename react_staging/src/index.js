@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
+  // React.StrictMode 不是启用严格模式，检测组件代码是否合理，
+  // 如不推荐的代码(ref='aaa')
   <React.StrictMode>
     <App />
   </React.StrictMode>,
