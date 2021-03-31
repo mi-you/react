@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./react.development.js"></script>
+  <script src="./react-dom.development.js"></script>
+  <script src="./babel.min.js"></script>
+  <script src="./prop-types.js"></script>
+  <title>ref</title>
+</head>
+<body>
+  <div id="test"></div>
+  <script type="text/babel"> 
+    /*
+      (1).通过驼峰属性指定事件处理函数
+          a.React使用的是自定义（合成）事件而不是使用原生DOM事件---为了更好的兼容性
+          b.React中的事件是通过事件委托方式处理的（委托给组件最外层的元素）----为了高效
+      (2).通过event.target得到发生事件的DOM元素对象----不要过度使用ref
+
+    */ 
+
+    class Person extends React.Component{
+      /* 
+        @3@React.createRef调用后返回一个容器，该容器可以存储被ref所标识的节点
+          该容器是“专人专用”的，也是react目前最推荐的
+      */  
+     myRef = React.createRef()
+      render(){
+        const { name } = this.props;
+        return (
+          <div>
+            {/*@1@ 字符串形式：不建议使用，存在效率问题，之后可能不废除移除*/}
+            <h1 ref='name' onClick={ this.onClick }>姓名：{name}</h1>
+            {/*@2@ 内联的回调会在更新时执行两次，第一次el为null,第二次才是dom,
+              对实际开发没影响，如果不想执行两次只要不内联就可以了 */}
+            <h1 ref={el => this._age = el }>年龄：18</h1>
+            <h1 ref={this.saveSex}>性别：男</h1>
+            {/*@3@ 把节点放到之前定义好的容器里*/}
+            <h1 ref={this.myRef}>爱好：自由</h1>
+          </div>
+        )
+      }
+      onClick = () => {
+        console.log(this.refs.name)
+        console.log(this._age)
+        console.log(this._sex)
+        // DOM被放到current上了
+        console.log(this.myRef.current)
+      }
+      saveSex = el => {
+        this._sex = el
+      }
+    }
+    const p = {name:'米又'}
+    const speak = () => {console.log('hello')}
+    ReactDOM.render(<Person {...p} speak={speak}/>,document.getElementById('test'))
+
+  </script>
+</body>
+</html>

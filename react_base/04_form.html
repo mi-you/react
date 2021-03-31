@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./react.development.js"></script>
+  <script src="./react-dom.development.js"></script>
+  <script src="./babel.min.js"></script>
+  <script src="./prop-types.js"></script>
+  <title>Props传参限制</title>
+</head>
+<body>
+  <div id="test"></div>
+  <script type="text/babel">
+  /*
+    非受控组件：现用现取（从dom节点获取）就是非受控。通过state,props维护状态就是受控
+
+    高阶函数：如果一个函数接收一个函数或返回一个函数那么这个函数就是高阶函数
+  */ 
+    class Login extends React.Component{
+      render(){
+        const { name } = this.props;
+        return (
+          <form action='www.baidu.com' onSubmit={this.submit}>
+            用户名：<input ref={el => this._name = el} type='text' name='username'/>
+            密码：<input ref={el => this._password = el} type='password' name='password'/>
+            <button>登录</button>
+          </form>
+        )
+      }
+      submit = event => {
+        event.preventDefault()
+        const name = this._name.value
+        const password = this._password.value
+
+        // 手动卸载组件
+        ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+      }
+    }
+
+    ReactDOM.render(<Login/>,document.getElementById('test'))
+
+  </script>
+</body>
+</html>

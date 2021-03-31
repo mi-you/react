@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./react.development.js"></script>
+  <script src="./react-dom.development.js"></script>
+  <script src="./babel.min.js"></script>
+  <script src="./prop-types.js"></script>
+  <title>Props传参限制</title>
+</head>
+<body>
+  <div id="test"></div>
+  <script type="text/babel">
+    /*
+      新生命周期和旧生命周期的区别
+      废弃了（设为不安全）3个钩子即
+        componentWillMount() -> UNSAFE_componentWillMount
+        componentWillReceiveProps() -> UNSAFE_componentWillReceiveProps
+        componentWillUpdate() -> UNSAFE_componentWillUpdate
+      新增两个钩子
+        getDerivedStateFromProps()
+        getSnapshotBeforeUpdate()
+    */
+    class Login extends React.Component{
+      constructor(props){
+        super(props)
+        this.state = { count:0 }
+      }
+      render(){
+        const { count } = this.state
+        return (
+          <div >
+            <h2>和为：{ count }</h2>
+            <button onClick={ this.onClick }>点我+1</button>
+          </div>
+        )
+      }
+      onClick = () => this.setState({count:this.state.count + 1})
+      componentDidMount(){}
+      /*
+        此方法使用场景罕见：组件内的状态完全有props控制
+        而且派生状态会导致代码冗余并使组件难以维护
+      */
+      static getDerivedStateFromProps(props,state){
+        console.log('aaa',props,state)
+        return null
+      }
+      shouldComponentUpdate(){ return true}
+      /*
+        此用法并不能常见 
+        这里的任何返回值都会作为第三个参数传给componentDidUpdate()
+        ps:即将被新页面替换的旧页面的'遗言'
+      */
+      getSnapshotBeforeUpdate(){
+        return '啦啦啦'
+      }
+      componentDidUpdate(prevProps,prevState,snapshot){}
+      componentWillUnmount(){}
+    }
+
+    ReactDOM.render(<Login name='tom'/>,document.getElementById('test'))
+
+  </script>
+</body>
+</html>
