@@ -1,0 +1,9 @@
+/* 
+  css 模块化
+  1. 在.css 前 加上module 如index.module.css
+  2. css导入方式由
+    import 'index.css -> import css from 'index.module.css'
+*/
+.title{
+  background-color: aqua;
+}
