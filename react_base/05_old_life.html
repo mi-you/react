@@ -33,24 +33,29 @@
         )
       }
       onClick = () => this.setState({count:this.state.count + 1})
-      componentWillMount(){
-        // 在新版本被改名了并且不推荐使用了
-        // UNSAFE_componentDidMount
-      }
+      /*
+        在新版本被改名了并且不推荐使用了: UNSAFE_componentDidMount
+      */ 
+      componentWillMount(){}
+
       componentDidMount(){}
-      componentWillReceiveProps(){
-        // 在新版本被改名了并且不推荐使用了
-        // UNSAFE_componentWillReceiveProps
-      }
-      shouldComponentUpdate(){ return true}
-      // forceUpdate() 会强制更新，不会走shouldComponentUpdate
-      // 不更改数据想更新页面可以调用 this.forceUpdate()
-      componentWillUpdate(){
-        // 在新版本被改名了并且不推荐使用了
-        // UNSAFE_componentWillReceiveProps
-      }
+      /*
+        在新版本被改名了并且不推荐使用了: UNSAFE_componentWillReceiveProps
+      */ 
+      componentWillReceiveProps(nextProps){}
+      /*
+        forceUpdate() 会强制更新，不会走shouldComponentUpdate
+        不更改数据想更新页面可以调用 this.forceUpdate()
+        如果类组件集成Component此函数默认返回true,如果是继承PureComponent那么会动态决定返回true或false
+      */ 
+      shouldComponentUpdate(nextProps, nextState){ return true}
+      /*
+        在新版本被改名了并且不推荐使用了: UNSAFE_componentWillReceiveProps
+      */ 
+      componentWillUpdate(nextProps, nextState){}
+
       componentDidUpdate(prevProps,prevState){}
-      componentWillUnmount(){} // 关定时器，取消订阅
+      componentWillUnmount(){}
     }
 
     ReactDOM.render(<Login/>,document.getElementById('test'))

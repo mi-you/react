@@ -34,14 +34,14 @@
             url: "/hello"
         ```
 ## NavLink 的封装
-见：MyNavLink.js
+- 见：MyNavLink.js
 ## Switch 的使用
 - 通常情况下 `path` 和 `component` 是一一对应的
 - 包裹在`<Route />`外作用是，只匹配一个，如果同一个path有多个component只展示第一个不想下继续匹配，提高效率
 ## 解决多级路径刷新页面样式丢失的问题
-- public/index.html中引入的样式时不写 ./ 写 /（常用）
-- public/index.html中引入的样式时不写 ./ 写 %PUBLIC_URL%（仅限react脚手架）
-- 把BrowserRouter 改成 HashRouter
+- public/index.html中引入的样式时不写 `./` 写 `/`（常用）
+- public/index.html中引入的样式时不写 `./` 写 `%PUBLIC_URL%`（仅限react脚手架）
+- 把 `BrowserRouter` 改成 `HashRouter`
 ## exact 开启路由的严格匹配
 ## Redirect 重定向（兜底）
 ## 路由由组件传递参数
@@ -92,6 +92,7 @@
 - 在store.js里添加些代码
 ```
     import {composeWithDevTools} from 'redux-devtools-extension'
+    ...
 ```
 
 # 一些扩展
@@ -174,22 +175,22 @@ function Demo(){
     <input type='text' ref={myRef} />
 ```
 ## 4 Fragment
-- 种拥有一个一个属性 `key`
+- 只能拥有一个可选属性 `key`
 - 也可以用空标签 `<></>`，不过不能接受任何属性
 ## 5 Context
 - 常用语 祖组件 或 更深层次的组件 之间的数据传输
 - 在父组件（祖先）上创建一个提供数据的东东
-```javascript
-/*
-    MyContent上有Provider 和 Consumer 两个（组件）
-        Provider在本身使用，
-        Consumer在后代上使用获取数据，或者 使用下面这种（限于类组件）获取数据
-            static contextType = MyContext
-                ...
-            const data = this.context
-*/
-MyContext = React.createContext()
-```
+    ```javascript
+    /*
+        MyContent上有Provider 和 Consumer 两个（组件）
+            Provider在本身使用，
+            Consumer在后代上使用获取数据，或者 使用下面这种（限于类组件）获取数据
+                static contextType = MyContext
+                    ...
+                const data = this.context
+    */
+    MyContext = React.createContext()
+    ```
 - 后代组件获取数据有两种写法
     -  声明取值这种不适合函数组件
     ```javascript
@@ -210,46 +211,46 @@ MyContext = React.createContext()
     }
     ```
 - 例子
-```javascript
-    /*
-        <A>
-            <B>
-                <C/>
-            </B>
-        </A>
-        this中有state,props,refs,也有context
-    */
-    // A 省略部分
-    const MyContext = React.createContext()
-    export default class A extends Component{
-        state = {userName:'米又'}
-        render(){
-            const { username } = this.state
-            return (
-                <div>
-                    <h1>A</h1>
-                    <MyContext.Provider value={username}>
-                        <B />
-                    </MyContext.Provider>
-                </div>
-            )
+    ```javascript
+        /*
+            <A>
+                <B>
+                    <C/>
+                </B>
+            </A>
+            this中有state,props,refs,也有context
+        */
+        // A 省略部分
+        const MyContext = React.createContext()
+        export default class A extends Component{
+            state = {userName:'米又'}
+            render(){
+                const { username } = this.state
+                return (
+                    <div>
+                        <h1>A</h1>
+                        <MyContext.Provider value={username}>
+                            <B />
+                        </MyContext.Provider>
+                    </div>
+                )
+            }
         }
-    }
-    // C
-    export default class C extends Component{
-        // C想使用，需要先主动举手声明说我想使用，只后this.context里就有数据了，不然this.context还是空对象
-        static contextType = MyContext
-        render(){
-            const { username } = this.state
-            return (
-                // 因为A中传递的不是对象，所以不用this.context.xxx了
-                <div>
-                    {'username:' + this.context }
-                </div>
-            )
+        // C
+        export default class C extends Component{
+            // C想使用，需要先主动举手声明说我想使用，只后this.context里就有数据了，不然this.context还是空对象
+            static contextType = MyContext
+            render(){
+                const { username } = this.state
+                return (
+                    // 因为A中传递的不是对象，所以不用this.context.xxx了
+                    <div>
+                        {'username:' + this.context }
+                    </div>
+                )
+            }
         }
-    }
-```
+    ```
 ## 6 组件优化
 - Component的2个问题
     - 只要执行setState(),即使不改变状态组件也会更新 => 效率低
@@ -265,55 +266,55 @@ MyContext = React.createContext()
     > 注意：PureComponent的比较是浅比较，不要直接修改state数据。项目中一般使用PureComponent来优化
 ## 7 render Props
 - 通过标签属性传入结构，一般使用render，**可以传递数据**
-```javascript
-class C extends Component{
-    render(){
-        return (
-            <A render={ value => <B xxx={value}>}>
-        )
+    ```javascript
+    class C extends Component{
+        render(){
+            return (
+                <A render={ value => <B xxx={value}>}>
+            )
+        }
     }
-}
-class B extends Component{
-    render(){
-        return (
-            <div>B</div>
-        )
+    class B extends Component{
+        render(){
+            return (
+                <div>B</div>
+            )
+        }
     }
-}
-class A extends Component{
-    render(){
-        return (
-            <div>
-                <p>A</p>
-                {(typeof this.props.render === 'function') && this.props.render(this.state.xxx)}
-            </div>
-        )
+    class A extends Component{
+        render(){
+            return (
+                <div>
+                    <p>A</p>
+                    {(typeof this.props.render === 'function') && this.props.render(this.state.xxx)}
+                </div>
+            )
+        }
     }
-}
-```
+    ```
 ## 8 错误边界
 - 只能捕获后代组件**生命周期**产生的错误，不能捕获自己组件和其他组件在合成事件。定时器中产生的错误
-```javascript
-export default class Parent extends Component{
-    state = { hasError:false }
-    /*
-        当Parent（也就是这个组件）的子组件发送错误时，调用这个
-        ps:之前有学过另一个钩子函数getDerivedStateFromProps
-    */ 
-    static getDerivedStateFromError(err){
-        return {hasError:err}
-    }
-    componentDidCatch(){
-        //此处统计错误，反馈给服务器，用于通知编码人员进行bug的解决。这个有没有都可以
-    }
-    render(){
-        const {hasError} = this.state
-        return (
-            <div>
-                { hasError?<h2>出错了</h2>:<ChildComponent /> }
-            </div>
-        )
-    }
+    ```javascript
+    export default class Parent extends Component{
+        state = { hasError:false }
+        /*
+            当Parent（也就是这个组件）的子组件发送错误时，调用这个
+            ps:之前有学过另一个钩子函数getDerivedStateFromProps
+        */ 
+        static getDerivedStateFromError(err){
+            return {hasError:err}
+        }
+        componentDidCatch(){
+            //此处统计错误，反馈给服务器，用于通知编码人员进行bug的解决。这个有没有都可以
+        }
+        render(){
+            const {hasError} = this.state
+            return (
+                <div>
+                    { hasError?<h2>出错了</h2>:<ChildComponent /> }
+                </div>
+            )
+        }
 
-}   
-```
+    }   
+    ```

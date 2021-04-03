@@ -8,28 +8,30 @@
   <script src="./react-dom.development.js"></script>
   <script src="./babel.min.js"></script>
   <script src="./prop-types.js"></script>
-  <title>Props传参限制</title>
+  <title>函数式组件</title>
 </head>
 <body>
   <div id="test"></div>
   <script type="text/babel">
-    class Person extends React.Component{
-      static propTypes = {
-        name:PropTypes.string.isRequired,
-        sex:PropTypes.string,
-        age:PropTypes.number,
-        speak:PropTypes.func
-      }
-      static defaultProps = {
-        sex:'不男不女',
-        age:18
-      }
-      render(){
-        const { name } = this.props;
-        return (
-          <h1>姓名：{name}</h1>
-        )
-      }
+    function Person(props){
+      return (
+        <div>
+          <h1>姓名：{props.name}</h1>
+          <h1>年龄：{props.age}</h1>
+          <h1>性别：{props.sex}</h1>
+          { props.speak() }
+        </div>
+      )
+    }
+    Person.propTypes = {  
+      name:PropTypes.string.isRequired,
+      sex:PropTypes.string,
+      age:PropTypes.number,
+      speak:PropTypes.func
+    }
+    Person.defaultProps = {
+      sex:'不男不女',
+      age:18
     }
     const p = {name:'米又'}
     const speak = () => {console.log('hello')}
