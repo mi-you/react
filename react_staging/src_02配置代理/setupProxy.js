@@ -13,7 +13,7 @@ const proxy = require('http-proxy-middleware')
 //  以前是写一个对象，现在写函数
 module.exports = function(app){
   app.use(
-    // 如果请求里有就/api1就转发给target代理
+    // 如果请求路径开头里有/api1就转发给target代理
     proxy('/student',{
       target:'http://localhost:5000',
       /*
